@@ -11,16 +11,16 @@ const router = new VueRouter({
     { path: '/home', component: Home }
   ]
 })
-// // 挂载路由导航守卫
-// router.beforeEach((to, from, next) => {
-//   if (to.path === '/login') return next()
-//   const tokenStr = window.sessionStorage.getItem('token')
-//   console.log(tokenStr)
-//   /*  本地是否存有token */
-//   if (tokenStr !== null && tokenStr !== 'undefined') {
-//     return next()
-//   } else {
-//     next('/login')
-//   }
-// })
+// 挂载路由导航守卫
+router.beforeEach((to, from, next) => {
+  if (to.path === '/login') return next()
+  const tokenStr = window.sessionStorage.getItem('token')
+  console.log(tokenStr)
+  /*  本地是否存有token */
+  if (tokenStr !== null && tokenStr !== 'undefined') {
+    return next()
+  } else {
+    next('/login')
+  }
+})
 export default router
