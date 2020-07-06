@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 <template>
 
   <el-container class="home-container">
@@ -37,9 +38,25 @@
 </template>
 <script>
 export default {
+  data () {
+    return {
+      // 左侧菜单数据
+      menulist: []
+    }
+  },
+  created () {
+    this.getMenuList()
+  },
   methods: {
     logout () {
       this.$router.push('/login')
+    },
+    // 获取所有的菜单
+    async getMenuList () {
+      const { data: res } = await this.$http.get('menus')
+      if (res.meta.status !== 200) return this.$message.console.error(res.meta.msg)
+      this.menulist = res.data
+      console.log(res)
     }
   }
 }
