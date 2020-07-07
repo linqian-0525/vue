@@ -11,22 +11,24 @@
       <el-button type="info" @click="logout">退出</el-button>
     </el-header>
     <!-- 页面主题区域 -->
-    <el-container>
+     <el-container>
       <!-- 侧边栏 -->
-      <el-aside width="200px">
+      <el-aside :width="iscollapse ? '64px' : '200px'">
+        <div class="toggle-button" @click="toggleCollapse">|||</div>
         <!-- 侧边栏菜单区域 -->
-        <el-menu background-color="#333744" text-color="#fff" active-text-color="#ffd04b">
+        <el-menu background-color="#333744" text-color="#fff" active-text-color="#409EFF" unique-opened
+        :collapse="iscollapse" :collapse-transition="false">
       <!-- 一级菜单 -->
-      <el-submenu index="1">
+      <el-submenu :index="item.id+''" v-for="item in menulist" :key="item.id">
         <template slot="title">
-          <i class="el-icon-location"></i>
-          <span>导航一</span>
+          <i :class="iconsObj[item.id]"></i>
+          <span>{{item.authName}}</span>
         </template>
         <!-- 二级菜单 -->
-        <el-submenu index="1-4">
+        <el-submenu :index="subItem.id" v-for="subItem in item.children" :key="subItem.id">
          <template slot="title">
-          <i class="el-icon-location"></i>
-          <span>导航一</span>
+          <i class="el-icon-menu"></i>
+          <span>{{subItem.authName}}</span>
         </template>
         </el-submenu>
       </el-submenu>
@@ -41,7 +43,15 @@ export default {
   data () {
     return {
       // 左侧菜单数据
-      menulist: []
+      menulist: [],
+      iconsObj: {
+        125: 'iconfont icon-user',
+        103: 'iconfont icon-tijikongjian',
+        101: 'iconfont icon-shangpin',
+        102: 'iconfont icon-danju',
+        145: 'iconfont icon-baobiao'
+      },
+      iscollapse: false
     }
   },
   created () {
@@ -57,6 +67,10 @@ export default {
       if (res.meta.status !== 200) return this.$message.console.error(res.meta.msg)
       this.menulist = res.data
       console.log(res)
+    },
+    // 点击按钮，切换菜单的折叠与展开
+    toggleCollapse () {
+      this.iscollapse = !this.iscollapse
     }
   }
 }
@@ -86,5 +100,17 @@ export default {
 }
 .el-main {
   background-color: #eaedf1;
+}
+.iconfont{
+  margin-right: 10px;
+}
+.toggle-button{
+  background-color: #4A5064;
+  font-size: 10px;
+  line-height: 24px;
+  color: #fff;
+  text-align: center; // 文本样式
+  letter-spacing: 0.2em; // 字体距离
+  cursor: pointer;
 }
 </style>
